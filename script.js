@@ -13,7 +13,6 @@ puntoKarro.forEach((punto , i)=> {
         let posicionPunto = i;
         let widthImg = 100 / puntoKarro.length
         let operacionPunto = posicionPunto * -widthImg
-        console.log(operacionPunto)
         karroGrande.style.transform = `translateX(${operacionPunto}%)`
 
         puntoKarro.forEach((punto, i) => {
