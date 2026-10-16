@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#5a3d12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Patillas del chip -->
+  <path d="M24 6v8M32 6v8M40 6v8M24 50v8M32 50v8M40 50v8M6 24h8M6 32h8M6 40h8M50 24h8M50 32h8M50 40h8"/>
+  <!-- Cuerpo del chip -->
+  <rect x="14" y="14" width="36" height="36" rx="5" fill="#e9cf7a"/>
+  <!-- Letras AI -->
+  <path d="M23 39l5-14 5 14M25 34h6"/>
+  <path d="M40 25v14"/>
+</svg>

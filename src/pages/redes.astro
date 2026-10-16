@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import LinkedinImg from "../assets/contact/linkedin.svg";
+import InstagramImg from "../assets/contact/instagram.svg";
+import MailImg from "../assets/contact/mail.svg";
+
+const contacts = [
+  {
+    name: "LinkedIn",
+    label: "in/mikelnait",
+    href: "https://www.linkedin.com/in/mikelnait",
+    image: LinkedinImg,
+    external: true,
+  },
+  {
+    name: "Instagram",
+    label: "@miguerre199",
+    href: "https://www.instagram.com/miguerre199",
+    image: InstagramImg,
+    external: true,
+  },
+  {
+    name: "Email",
+    label: "miguerre93@gmail.com",
+    href: "mailto:miguerre93@gmail.com",
+    image: MailImg,
+    external: false,
+  },
+];
+---
+
+<BaseLayout title="Contact | Mikel">
+  <section class="min-h-screen bg-[#f5f0e6] px-8 py-8 md:px-12 xl:px-16">
+    <div class="mx-auto max-w-[1380px]">
+      <!-- Título -->
+      <div class="mb-16 text-center">
+        <div class="mx-auto mb-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+        <h1 class="font-serif text-7xl tracking-[0.12em] text-[#8c6b1f]">
+          EPISTULA
+        </h1>
+        <div class="mx-auto mt-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+        <p class="mt-6 text-lg text-[#8e8371]">
+          Send me a message or find me on my networks
+        </p>
+      </div>
+
+      <!-- Contactos -->
+      <div class="mx-auto grid max-w-[1100px] gap-8 md:grid-cols-3">
+        {contacts.map((contact) => (
+          <a
+            href={contact.href}
+            {...(contact.external && { target: "_blank", rel: "noopener noreferrer" })}
+            class="group flex flex-col items-center rounded-[12px] border-[3px] border-[#d5b02f] bg-[#f7f2e8] px-6 py-10 text-center shadow-[0_18px_40px_rgba(70,50,13,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(70,50,13,0.16)]"
+          >
+            <!-- Moneda -->
+            <div class="flex h-[108px] w-[108px] items-center justify-center rounded-full border-[6px] border-[#98731d] bg-[radial-gradient(circle_at_35%_35%,_#fef6d7,_#cfaf54_55%,_#8a6718_100%)] p-[8px] shadow-[0_10px_18px_rgba(77,56,13,0.18)]">
+              <div class="flex h-full w-full items-center justify-center rounded-full border-[4px] border-[#cfb15f] bg-[#f5f1e9]">
+                <Image src={contact.image} alt="" class="h-[56px] w-[56px] object-contain" />
+              </div>
+            </div>
+
+            <h2 class="mt-6 font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+              {contact.name}
+            </h2>
+            <p class="mt-2 break-all text-lg text-[#6f6558] group-hover:text-[#8c6b1f]">
+              {contact.label}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,210 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { projects } from "../data/projects";
+import { jobs } from "../data/jobs";
+
+// Todas las fotos de src/assets/miniatures/ se cargan solas.
+// El pie de foto sale del nombre del archivo: "01-space-marine-captain.jpg" -> "Space Marine Captain"
+// (el número inicial solo sirve para ordenar y no se muestra)
+const photoFiles = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/miniatures/*.{jpg,jpeg,png,webp,avif}",
+  { eager: true }
+);
+
+const miniatures = Object.entries(photoFiles)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, mod]) => {
+    const fileName = path.split("/").pop()!.replace(/\.[^.]+$/, "");
+    const caption = fileName
+      .replace(/^\d+[-_ ]*/, "")
+      .replace(/[-_]+/g, " ")
+      .replace(/(^|\s)\S/g, (c) => c.toUpperCase());
+    return { image: mod.default, caption };
+  });
+---
+
+<BaseLayout title="Portfolio | Mikel">
+  <section class="min-h-screen bg-[#f5f0e6] px-8 py-8 md:px-12 xl:px-16">
+    <div class="mx-auto max-w-[1380px]">
+      <!-- Título -->
+      <div class="mb-16 text-center">
+        <div class="mx-auto mb-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+        <h1 class="font-serif text-7xl tracking-[0.12em] text-[#8c6b1f]">
+          OPERA
+        </h1>
+        <div class="mx-auto mt-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+      </div>
+
+      <!-- Empleo -->
+      <section>
+        <div class="text-center">
+          <h2 class="font-serif text-4xl uppercase tracking-[0.05em] text-[#a67d24] sm:text-5xl">
+            Cursus Honorum
+          </h2>
+          <p class="mt-4 text-lg text-[#8e8371]">
+            My professional career
+          </p>
+        </div>
+
+        <ol class="relative mx-auto mt-12 max-w-[900px] border-l-2 border-[#d5b02f] pl-8 sm:pl-12">
+          {jobs.map((job) => (
+            <li class="relative mb-10 last:mb-0">
+              <!-- Punto de la línea de tiempo -->
+              <span
+                class:list={[
+                  "absolute top-8 -left-[41px] h-4 w-4 rounded-full border-[3px] border-[#98731d] sm:-left-[57px]",
+                  job.end ? "bg-[#f5f0e6]" : "bg-[#d7b33e] ring-4 ring-[#d7b33e]/30",
+                ]}
+              ></span>
+
+              <article class="rounded-[12px] border-[3px] border-[#d5b02f] bg-[#f7f2e8] p-8 shadow-[0_18px_40px_rgba(70,50,13,0.10)]">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+                  <h3 class="font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+                    {job.role}
+                  </h3>
+                  <span class="font-serif text-sm tracking-[0.15em] text-[#8e8371]">
+                    {job.start} – {job.end ?? "Present"}
+                  </span>
+                </div>
+
+                <div class="mt-1 flex items-center gap-3">
+                  <p class="text-lg text-[#8c6b1f]">{job.company}</p>
+                  {!job.end && (
+                    <span class="rounded-full bg-[#d7b33e] px-3 py-0.5 text-xs uppercase tracking-[0.15em] text-[#4c3508]">
+                      Current
+                    </span>
+                  )}
+                </div>
+
+                <div class="mt-4 h-px bg-[#d9c299]/70"></div>
+
+                <p class="mt-5 text-lg leading-8 text-[#6f6558]">
+                  {job.description}
+                </p>
+
+                {job.tech && (
+                  <div class="mt-6 flex flex-wrap gap-2">
+                    {job.tech.map((tech) => (
+                      <span class="rounded-full border border-[#cfb15f] bg-[#f5e6c8] px-3 py-1 text-sm text-[#7a5a14]">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </article>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <!-- Separador -->
+      <div class="my-20 flex items-center gap-5 text-[#d0b266]">
+        <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+        <span class="text-base">✦</span>
+        <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+      </div>
+
+      <!-- Proyectos -->
+      <section>
+        <div class="text-center">
+          <h2 class="font-serif text-4xl uppercase tracking-[0.05em] text-[#a67d24] sm:text-5xl">
+            Opera Laboris
+          </h2>
+          <p class="mt-4 text-lg text-[#8e8371]">
+            Projects I have developed
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project) => (
+            <article class="flex flex-col rounded-[12px] border-[3px] border-[#d5b02f] bg-[#f7f2e8] p-8 shadow-[0_18px_40px_rgba(70,50,13,0.10)]">
+              <div class="flex items-baseline justify-between gap-4">
+                <h3 class="font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+                  {project.name}
+                </h3>
+                {project.year && (
+                  <span class="font-serif text-sm tracking-[0.15em] text-[#8e8371]">
+                    {project.year}
+                  </span>
+                )}
+              </div>
+
+              <div class="mt-4 h-px bg-[#d9c299]/70"></div>
+
+              <p class="mt-5 flex-1 text-lg leading-8 text-[#6f6558]">
+                {project.description}
+              </p>
+
+              <div class="mt-6 flex flex-wrap items-center gap-2">
+                {project.tech.map((tech) => (
+                  <span class="rounded-full border border-[#cfb15f] bg-[#f5e6c8] px-3 py-1 text-sm text-[#7a5a14]">
+                    {tech}
+                  </span>
+                ))}
+                <span class="ml-auto text-xs uppercase tracking-[0.15em] text-[#a99d88]">
+                  Proprietary code
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Separador -->
+      <div class="my-20 flex items-center gap-5 text-[#d0b266]">
+        <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+        <span class="text-base">✦</span>
+        <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+      </div>
+
+      <!-- Galería de miniaturas -->
+      <section>
+        <div class="text-center">
+          <h2 class="font-serif text-4xl uppercase tracking-[0.05em] text-[#a67d24] sm:text-5xl">
+            Miniaturae
+          </h2>
+          <p class="mt-4 text-lg text-[#8e8371]">
+            Warhammer miniatures I have painted
+          </p>
+        </div>
+
+        {miniatures.length > 0 ? (
+          <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {miniatures.map((mini) => (
+              <figure class="group">
+                <a
+                  href={mini.image.src}
+                  target="_blank"
+                  rel="noopener"
+                  class="block rounded-[10px] border-[4px] border-[#d5b02f] bg-[#f7f2e8] p-2 shadow-[0_18px_40px_rgba(70,50,13,0.12)] transition duration-300 group-hover:-translate-y-1"
+                >
+                  <Image
+                    src={mini.image}
+                    alt={mini.caption}
+                    widths={[400, 800]}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    class="aspect-square w-full rounded-[6px] object-cover"
+                  />
+                </a>
+                <figcaption class="mt-4 text-center font-serif text-xl uppercase tracking-[0.04em] text-[#a67d24]">
+                  {mini.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div class="mx-auto mt-12 max-w-[640px] rounded-[12px] border-[3px] border-dashed border-[#d5b02f] bg-[#f7f2e8] p-10 text-center">
+            <p class="font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+              In aedificatione
+            </p>
+            <p class="mt-4 text-lg text-[#6f6558]">
+              Painted miniatures coming soon...
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
+  </section>
+</BaseLayout>

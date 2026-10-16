@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" fill="none" stroke="#5a3d12" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <!-- Media serpiente; la otra mitad es la misma girada 180° -->
+    <path id="serpiente" d="M31 6c-8 0-12 2.5-12 7v6h13v2H14c-5 0-8 4-8 11s3 11 8 11h4v-6c0-5 3.5-8 8.5-8h11c4 0 6.5-2.5 6.5-6.5V13c0-4.5-5-7-13-7z" fill="#e9cf7a"/>
+  </defs>
+  <use href="#serpiente" xlink:href="#serpiente"/>
+  <use href="#serpiente" xlink:href="#serpiente" transform="rotate(180 32 32)"/>
+  <!-- Ojos -->
+  <circle cx="25" cy="12.5" r="2" fill="#5a3d12" stroke="none"/>
+  <circle cx="39" cy="51.5" r="2" fill="#5a3d12" stroke="none"/>
+</svg>

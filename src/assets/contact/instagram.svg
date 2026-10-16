@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#5a3d12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Cámara -->
+  <rect x="8" y="8" width="48" height="48" rx="14" fill="#e9cf7a"/>
+  <circle cx="32" cy="32" r="11"/>
+  <circle cx="45" cy="19" r="2.5" fill="#5a3d12" stroke="none"/>
+</svg>

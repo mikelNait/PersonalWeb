@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import FotoPerfilUno from "../assets/index_page/FotoPerfilUno.jpg";
+
+import JavaScriptImg from "../assets/index_page/js_img.svg";
+import PythonImg from "../assets/index_page/python_img.svg";
+import SqlImg from "../assets/index_page/sql_img.svg";
+import AiImg from "../assets/index_page/ai_img.svg";
+import LinuxImg from "../assets/index_page/linux_img.svg";
+
+const techItems = [
+  {
+    name: "JavaScript",
+    image: JavaScriptImg,
+    alt: "JavaScript coin",
+  },
+  {
+    name: "Python",
+    image: PythonImg,
+    alt: "Python coin",
+  },
+  {
+    name: "SQL",
+    image: SqlImg,
+    alt: "SQL coin",
+  },
+  {
+    name: "AI",
+    image: AiImg,
+    alt: "AI coin",
+  },
+  {
+    name: "Linux",
+    image: LinuxImg,
+    alt: "Linux coin",
+  },
+];
+---
+
+<BaseLayout title="Inicio | Mikel">
+  <section class="min-h-screen bg-[#f5f0e6] px-8 py-8 md:px-12 xl:px-16">
+    <div class="mx-auto max-w-[1380px]">
+                      <!-- Título hero -->
+        <div class="mb-16 text-center">
+
+          <!-- Línea superior -->
+          <div class="mx-auto mb-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+
+          <!-- Título -->
+          <h1 class="font-serif text-7xl tracking-[0.12em] text-[#8c6b1f]">
+            MIKEL NAIT
+          </h1>
+
+          <!-- Línea inferior -->
+          <div class="mx-auto mb-6 h-[3px] w-[320px] bg-[#caa334]"></div>
+
+        </div>
+      <div class="grid gap-16 xl:grid-cols-[1.02fr_0.98fr] xl:gap-20">
+
+        <!-- Columna izquierda -->
+        <div class="relative">
+
+          <!-- Marco principal -->
+          <div class="relative mx-auto max-w-[560px] pt-6">
+            <!-- Esquinas -->
+            <div class="absolute -left-4 -top-2 h-8 w-8 border-l-4 border-t-4 border-[#d1a92c]"></div>
+            <div class="absolute -right-4 -top-2 h-8 w-8 border-r-4 border-t-4 border-[#d1a92c]"></div>
+            <div class="absolute -bottom-4 -left-4 h-8 w-8 border-b-4 border-l-4 border-[#d1a92c]"></div>
+            <div class="absolute -bottom-4 -right-4 h-8 w-8 border-b-4 border-r-4 border-[#d1a92c]"></div>
+
+            <div class="rounded-[12px] border-[6px] border-[#d5b02f] bg-[#f7f2e8] p-3 shadow-[0_28px_55px_rgba(70,50,13,0.13)]">
+              <div class="relative aspect-[0.95] overflow-hidden rounded-[6px] border border-[#d8cfbe] bg-[radial-gradient(circle_at_center,_rgba(213,176,47,0.08),_transparent_60%),linear-gradient(rgba(196,184,159,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(196,184,159,0.14)_1px,transparent_1px)] bg-[size:auto,8px_8px,8px_8px]">
+                <Image
+                  src={FotoPerfilUno}
+                  alt="Portrait of Mikel"
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="relative pt-8">
+          <div class="max-w-[640px]">
+            <div class="flex gap-6">
+              <div class="hidden w-px bg-[#c69f33] md:block"></div>
+
+              <div>
+                <h1 class="font-serif text-4xl uppercase tracking-[0.04em] text-[#a67d24] sm:text-5xl">
+                  HELLO...
+                </h1>
+
+                <div class="mt-8 space-y-6 text-lg leading-10 text-[#6f6558] sm:text-[1.45rem] sm:leading-[2.5rem]">
+                  <p>
+                    After battling the seas of uncertainty, I have finally set course for my destination... Programming.
+                    My weapons, JavaScript and Python. My resources, HTML, CSS, which support me on my journey.
+                  </p>
+
+                  <p>
+                    I have experience in handling the linux operating system, I have worked supporting virtual machines remotely via SSH protocol, I have used HostedScan for securing servers and performing and verifying backups of various DB among other functions..
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-12 flex items-center gap-5 text-[#d0b266]">
+              <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+              <span class="text-base">✦</span>
+              <div class="h-px flex-1 bg-[#d9c299]/70"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección tecnologías -->
+      <section class="mt-20 lg:mt-24">
+        <div class="text-center">
+          <h2 class="font-serif text-4xl uppercase tracking-[0.05em] text-[#a67d24] sm:text-5xl">
+            Linguae Technicae
+          </h2>
+          <p class="mt-4 text-lg text-[#8e8371]">
+            The digital languages I speak
+          </p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+          {techItems.map((tech) => (
+  <article class="group text-center">
+    <div class="mx-auto flex h-[108px] w-[108px] items-center justify-center rounded-full border-[6px] border-[#98731d] bg-[radial-gradient(circle_at_35%_35%,_#fef6d7,_#cfaf54_55%,_#8a6718_100%)] p-[8px] shadow-[0_10px_18px_rgba(77,56,13,0.18)] transition duration-300 group-hover:-translate-y-1">
+      <div class="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full border-[4px] border-[#cfb15f] bg-[#f5f1e9]">
+        <Image
+          src={tech.image}
+          alt={tech.alt}
+          class="h-[62px] w-[62px] object-contain"
+        />
+      </div>
+    </div>
+
+    <h3 class="mt-5 font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+      {tech.name}
+    </h3>
+  </article>
+))}
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
