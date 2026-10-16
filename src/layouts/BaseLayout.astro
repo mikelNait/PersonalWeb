@@ -4,12 +4,15 @@ import "../styles/global.css";
 const { title = "Mikel Guerrero" } = Astro.props;
 
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+// En móvil, con la barra plegada, los enlaces solo muestran el icono centrado
 const navClass = (href: string) => [
-  "flex items-center gap-4 rounded-xl px-5 py-4 transition",
+  "flex items-center gap-4 rounded-xl py-4 transition justify-center px-0 md:justify-start md:px-5 group-data-[open]:justify-start group-data-[open]:px-5",
   currentPath === href
     ? "bg-[#d7b33e] text-[#4c3508] shadow-lg"
     : "hover:bg-white/5",
 ];
+// Textos que solo se ven con la barra desplegada (o en escritorio)
+const expandedOnly = "hidden md:block group-data-[open]:block";
 ---
 
 <html lang="es">
@@ -23,14 +26,38 @@ const navClass = (href: string) => [
 
     <div class="flex min-h-screen">
 
-      <!-- SIDEBAR -->
-      <aside class="w-[280px] bg-gradient-to-b from-[#9b771e] to-[#8d6b19] text-[#f5e6c8] flex flex-col justify-between">
+      <!-- SIDEBAR: en móvil es una franja de iconos que se despliega; en escritorio siempre abierta -->
+      <aside
+        id="sidebar"
+        class="group fixed inset-y-0 left-0 z-40 flex w-[72px] flex-col justify-between overflow-x-hidden overflow-y-auto bg-gradient-to-b from-[#9b771e] to-[#8d6b19] text-[#f5e6c8] transition-[width] duration-300 data-[open]:w-[280px] data-[open]:shadow-2xl md:sticky md:top-0 md:h-screen md:w-[280px]"
+      >
 
         <!-- Top -->
         <div>
 
+          <!-- Botón desplegar/plegar (solo móvil) -->
+          <div class="flex h-[72px] items-center justify-center md:hidden group-data-[open]:justify-end group-data-[open]:px-5">
+            <button
+              id="sidebar-toggle"
+              type="button"
+              aria-controls="sidebar"
+              aria-expanded="false"
+              aria-label="Open menu"
+              class="flex h-11 w-11 items-center justify-center rounded-xl hover:bg-white/10"
+            >
+              <!-- Hamburguesa -->
+              <svg viewBox="0 0 24 24" class="h-7 w-7 group-data-[open]:hidden" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <path d="M4 7h16M4 12h16M4 17h16"/>
+              </svg>
+              <!-- Cerrar -->
+              <svg viewBox="0 0 24 24" class="hidden h-7 w-7 group-data-[open]:block" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <path d="M6 6l12 12M18 6L6 18"/>
+              </svg>
+            </button>
+          </div>
+
           <!-- Título -->
-          <div class="px-8 pt-10 pb-6">
+          <div class:list={["px-8 pb-6 pt-10 group-data-[open]:pt-0", expandedOnly]}>
             <h1 class="font-serif text-3xl tracking-[0.1em]">NAVIGATIO</h1>
 
             <div class="flex items-center gap-3 mt-4 opacity-70">
@@ -41,16 +68,17 @@ const navClass = (href: string) => [
           </div>
 
           <!-- Navigation -->
-          <nav class="px-6 mt-6 space-y-2">
+          <nav class="mt-2 space-y-2 px-3 md:mt-6 md:px-6 group-data-[open]:mt-6 group-data-[open]:px-6">
 
             <!-- Inicio -->
             <a
               href="/"
+              title="Domus"
               class:list={navClass("/")}
             >
               <svg
   viewBox="0 0 33 33"
-  class="h-6 w-6"
+  class="h-6 w-6 shrink-0"
   fill="none"
   stroke="currentColor"
   stroke-width="2.6"
@@ -63,7 +91,7 @@ const navClass = (href: string) => [
   <path d="M5 25.6667H27.6667V29.6667H5V25.6667Z"/>
 </svg>
 
-              <div>
+              <div class={expandedOnly}>
                 <p class="font-serif tracking-[0.08em]">Domus</p>
                 <p class="text-xs opacity-70">Home</p>
               </div>
@@ -72,17 +100,18 @@ const navClass = (href: string) => [
             <!-- Portfolio -->
             <a
               href="/portfolio"
+              title="Opera"
               class:list={navClass("/portfolio")}
             >
               <svg
   viewBox="0 0 26 32"
-  class="h-6 w-6"
+  class="h-6 w-6 shrink-0"
   fill="currentColor"
 >
   <path d="M0 3.2C0 2.35131 0.34241 1.53737 0.951903 0.937258C1.5614 0.337142 2.38805 0 3.25 0H16.25C16.6809 9.06198e-05 17.0942 0.168721 17.3989 0.4688L25.5239 8.4688C25.8286 8.76879 25.9999 9.17569 26 9.6V28.8C26 29.6487 25.6576 30.4626 25.0481 31.0627C24.4386 31.6629 23.612 32 22.75 32H3.25C2.38805 32 1.5614 31.6629 0.951903 31.0627C0.34241 30.4626 0 29.6487 0 28.8V3.2ZM22.0773 9.6L16.25 3.8624V9.6H22.0773ZM13 3.2H3.25V28.8H22.75V12.8H14.625C14.194 12.8 13.7807 12.6314 13.476 12.3314C13.1712 12.0313 13 11.6243 13 11.2V3.2Z"/>
 </svg>
 
-              <div>
+              <div class={expandedOnly}>
                 <p class="font-serif tracking-[0.08em]">Opera</p>
                 <p class="text-xs opacity-70">Portfolio</p>
               </div>
@@ -91,17 +120,18 @@ const navClass = (href: string) => [
             <!-- Contacto -->
             <a
               href="/redes"
+              title="Epistula"
               class:list={navClass("/redes")}
             >
                 <svg
     viewBox="0 0 32 32"
-    class="h-6 w-6"
+    class="h-6 w-6 shrink-0"
     fill="currentColor"
   >
     <path d="M24 21C23.4613 20.9998 22.9281 21.1088 22.4326 21.3204C21.9372 21.532 21.4898 21.8419 21.1175 22.2313L11.8675 17.0269C12.0467 16.354 12.0467 15.646 11.8675 14.9731L21.1175 9.76875C21.7911 10.4671 22.6961 10.8959 23.6632 10.9748C24.6302 11.0537 25.5928 10.7773 26.3707 10.1975C27.1486 9.61757 27.6884 8.77396 27.8889 7.82466C28.0894 6.87537 27.937 5.88552 27.4601 5.04057C26.9832 4.19562 26.2146 3.55353 25.2983 3.2346C24.3819 2.91567 23.3808 2.94177 22.4823 3.30803C21.5838 3.67428 20.8497 4.35556 20.4175 5.22422C19.9853 6.09288 19.8846 7.08932 20.1344 8.02688L10.8844 13.2313C10.3318 12.6551 9.61957 12.2575 8.8392 12.0896C8.05884 11.9216 7.24606 11.9909 6.50543 12.2887C5.7648 12.5865 5.1302 13.099 4.68327 13.7604C4.23633 14.4218 3.9975 15.2018 3.9975 16C3.9975 16.7982 4.23633 17.5782 4.68327 18.2396C5.1302 18.901 5.7648 19.4135 6.50543 19.7113C7.24606 20.0091 8.05884 20.0784 8.8392 19.9104C9.61957 19.7425 10.3318 19.3449 10.8844 18.7688L20.1344 23.9731C19.9199 24.7805 19.9636 25.6348 20.2594 26.4162C20.5552 27.1975 21.0881 27.8666 21.7835 28.3295C22.4789 28.7925 23.3018 29.0262 24.1367 28.9977C24.9717 28.9692 25.7767 28.68 26.4389 28.1707C27.1011 27.6614 27.5873 26.9575 27.8291 26.1578C28.0709 25.3582 28.0563 24.5029 27.7873 23.712C27.5182 22.921 27.0083 22.2342 26.3291 21.7478C25.6499 21.2614 24.8354 20.9999 24 21Z"/>
   </svg>
 
-              <div>
+              <div class={expandedOnly}>
                 <p class="font-serif tracking-[0.08em]">Epistula</p>
                 <p class="text-xs opacity-70">Contact and Nets</p>
               </div>
@@ -111,7 +141,7 @@ const navClass = (href: string) => [
         </div>
 
         <!-- Bottom -->
-        <div class="px-8 pb-10">
+        <div class:list={["px-8 pb-10", expandedOnly]}>
 
           <div class="h-px bg-[#d7b33e]/40 mb-8"></div>
 
@@ -129,15 +159,37 @@ const navClass = (href: string) => [
 
       </aside>
 
+      <!-- Fondo oscuro tras la barra desplegada (solo móvil) -->
+      <div id="sidebar-backdrop" class="fixed inset-0 z-30 hidden bg-black/40 md:hidden"></div>
 
-      <!-- MAIN CONTENT -->
-      <main class="flex-1">
+
+      <!-- MAIN CONTENT: en móvil deja sitio a la franja de iconos -->
+      <main class="min-w-0 flex-1 pl-[72px] md:pl-0">
 
         <slot />
 
       </main>
 
     </div>
+
+    <script>
+      const sidebar = document.getElementById("sidebar")!;
+      const toggle = document.getElementById("sidebar-toggle")!;
+      const backdrop = document.getElementById("sidebar-backdrop")!;
+
+      const setOpen = (open: boolean) => {
+        sidebar.toggleAttribute("data-open", open);
+        backdrop.classList.toggle("hidden", !open);
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      };
+
+      toggle.addEventListener("click", () => setOpen(!sidebar.hasAttribute("data-open")));
+      backdrop.addEventListener("click", () => setOpen(false));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setOpen(false);
+      });
+    </script>
 
   </body>
 </html>
