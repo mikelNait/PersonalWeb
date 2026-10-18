@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import FotoPerfilUno from "../assets/index_page/FotoPerfilUno.jpg";
+import LogoMikelNait from "../assets/index_page/Mikel_Nait_sinfondo.png";
 
 import JavaScriptImg from "../assets/index_page/js_img.svg";
 import PythonImg from "../assets/index_page/python_img.svg";
@@ -44,16 +45,17 @@ const techItems = [
                       <!-- Título hero -->
         <div class="mb-16 text-center">
 
-          <!-- Línea superior -->
-          <div class="mx-auto mb-6 h-[3px] w-full max-w-[320px] bg-[#caa334]"></div>
-
-          <!-- Título -->
-          <h1 class="font-serif text-4xl tracking-[0.12em] text-[#8c6b1f] sm:text-6xl lg:text-7xl">
-            MIKEL NAIT
+          <!-- Título (logo con el nombre) -->
+          <h1>
+            <Image
+              src={LogoMikelNait}
+              alt="Mikel Nait"
+              widths={[600, 1000, 1600]}
+              sizes="(min-width: 768px) 720px, 100vw"
+              loading="eager"
+              class="mx-auto h-auto w-full max-w-[720px]"
+            />
           </h1>
-
-          <!-- Línea inferior -->
-          <div class="mx-auto mt-6 h-[3px] w-full max-w-[320px] bg-[#caa334]"></div>
 
         </div>
       <div class="grid gap-16 xl:grid-cols-[1.02fr_0.98fr] xl:gap-20">

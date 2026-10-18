@@ -20,14 +20,10 @@ const contacts = [
     image: InstagramImg,
     external: true,
   },
-  {
-    name: "Email",
-    label: "miguerre93@gmail.com",
-    href: "mailto:miguerre93@gmail.com",
-    image: MailImg,
-    external: false,
-  },
 ];
+
+// Clave pública de Web3Forms: los mensajes del formulario llegan a mi correo sin exponerlo en la web
+const WEB3FORMS_KEY = "c7d26a5d-6dfe-4ed7-ad88-ffa99972263e";
 ---
 
 <BaseLayout title="Contact | Mikel">
@@ -46,7 +42,7 @@ const contacts = [
       </div>
 
       <!-- Contactos -->
-      <div class="mx-auto grid max-w-[1100px] gap-8 md:grid-cols-3">
+      <div class="mx-auto grid max-w-[1100px] gap-8 md:grid-cols-2">
         {contacts.map((contact) => (
           <a
             href={contact.href}
@@ -69,6 +65,115 @@ const contacts = [
           </a>
         ))}
       </div>
+
+      <!-- Formulario de contacto -->
+      <div class="mx-auto mt-12 max-w-[1100px] rounded-[12px] border-[3px] border-[#d5b02f] bg-[#f7f2e8] px-5 py-10 shadow-[0_18px_40px_rgba(70,50,13,0.10)] sm:px-10">
+        <div class="flex flex-col items-center text-center">
+          <!-- Moneda -->
+          <div class="flex h-[108px] w-[108px] items-center justify-center rounded-full border-[6px] border-[#98731d] bg-[radial-gradient(circle_at_35%_35%,_#fef6d7,_#cfaf54_55%,_#8a6718_100%)] p-[8px] shadow-[0_10px_18px_rgba(77,56,13,0.18)]">
+            <div class="flex h-full w-full items-center justify-center rounded-full border-[4px] border-[#cfb15f] bg-[#f5f1e9]">
+              <Image src={MailImg} alt="" class="h-[56px] w-[56px] object-contain" />
+            </div>
+          </div>
+          <h2 class="mt-6 font-serif text-2xl uppercase tracking-[0.04em] text-[#a67d24]">
+            Email
+          </h2>
+          <p class="mt-2 text-lg text-[#6f6558]">
+            Write me a message and I will reply as soon as possible
+          </p>
+        </div>
+
+        <form
+          id="contact-form"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="mx-auto mt-8 grid max-w-[760px] gap-5 sm:grid-cols-2"
+        >
+          <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+          <input type="hidden" name="subject" value="New message from your personal website" />
+          <input type="hidden" name="from_name" value="Personal website" />
+          <!-- Campo trampa contra bots: las personas no lo ven -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none" tabindex="-1" autocomplete="off" />
+
+          <label class="flex flex-col gap-2">
+            <span class="font-serif text-sm uppercase tracking-[0.15em] text-[#8c6b1f]">Name</span>
+            <input
+              type="text"
+              name="name"
+              required
+              autocomplete="name"
+              class="rounded-[8px] border-2 border-[#d9c299] bg-[#fdfaf3] px-4 py-3 text-lg text-[#4f463a] outline-none transition focus:border-[#d5b02f] focus:ring-4 focus:ring-[#d7b33e]/20"
+            />
+          </label>
+
+          <label class="flex flex-col gap-2">
+            <span class="font-serif text-sm uppercase tracking-[0.15em] text-[#8c6b1f]">Email</span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="rounded-[8px] border-2 border-[#d9c299] bg-[#fdfaf3] px-4 py-3 text-lg text-[#4f463a] outline-none transition focus:border-[#d5b02f] focus:ring-4 focus:ring-[#d7b33e]/20"
+            />
+          </label>
+
+          <label class="flex flex-col gap-2 sm:col-span-2">
+            <span class="font-serif text-sm uppercase tracking-[0.15em] text-[#8c6b1f]">Message</span>
+            <textarea
+              name="message"
+              required
+              rows="6"
+              class="resize-y rounded-[8px] border-2 border-[#d9c299] bg-[#fdfaf3] px-4 py-3 text-lg text-[#4f463a] outline-none transition focus:border-[#d5b02f] focus:ring-4 focus:ring-[#d7b33e]/20"
+            ></textarea>
+          </label>
+
+          <div class="flex flex-col items-center gap-4 sm:col-span-2">
+            <button
+              type="submit"
+              class="rounded-full border-[3px] border-[#98731d] bg-[#d7b33e] px-10 py-3 font-serif text-lg uppercase tracking-[0.15em] text-[#4c3508] shadow-[0_10px_18px_rgba(77,56,13,0.18)] transition hover:-translate-y-0.5 hover:bg-[#e0c057] disabled:cursor-wait disabled:opacity-60"
+            >
+              Send
+            </button>
+            <p id="contact-status" class="min-h-[1.75rem] text-center text-lg" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Envío sin salir de la página. Sin JavaScript el formulario se envía igualmente
+  // y Web3Forms muestra su propia página de confirmación.
+  const form = document.querySelector<HTMLFormElement>("#contact-form")!;
+  const status = document.querySelector<HTMLElement>("#contact-status")!;
+  const button = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+
+  const showStatus = (text: string, ok: boolean) => {
+    status.textContent = text;
+    status.classList.toggle("text-[#5f7a2e]", ok);
+    status.classList.toggle("text-[#a3412a]", !ok);
+  };
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    button.disabled = true;
+    showStatus("Sending...", true);
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message);
+      form.reset();
+      showStatus("Message sent. Thank you!", true);
+    } catch {
+      showStatus("The message could not be sent. Please try again later.", false);
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
